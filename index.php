@@ -28,10 +28,12 @@
 
             <div class="sidebar-user">
                 <div class="sidebar-user-info">
-                    <div class="sidebar-user-avatar" id="user-avatar">A</div>
+                    <div class="sidebar-user-avatar" id="user-avatar">
+                        <?php echo strtoupper(substr($_SESSION['full_name'] ?? 'U', 0, 1)); ?>
+                    </div>
                     <div class="sidebar-user-details">
-                        <h6 id="user-name">Loading...</h6>
-                        <p id="user-role">Admin</p>
+                        <h6 id="user-name"><?php echo htmlspecialchars($_SESSION['full_name'] ?? 'User'); ?></h6>
+                        <p id="user-role"><?php echo htmlspecialchars($_SESSION['role'] ?? 'Admin'); ?></p>
                     </div>
                 </div>
             </div>
@@ -39,7 +41,7 @@
             <nav class="sidebar-nav">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">
+                        <a class="nav-link active" href="index.php">
                             <i class="bi bi-speedometer2"></i>
                             <span>Overview</span>
                         </a>
