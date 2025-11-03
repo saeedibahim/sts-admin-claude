@@ -1,0 +1,81 @@
+# STS Dashboard - Git Ignore
+
+# Uploaded files (keep structure with .gitkeep)
+uploads/*
+!uploads/.gitkeep
+!uploads/documents/
+!uploads/images/
+!uploads/temp/
+uploads/documents/*
+!uploads/documents/.gitkeep
+uploads/images/*
+!uploads/images/.gitkeep
+uploads/temp/*
+!uploads/temp/.gitkeep
+
+# Configuration files with sensitive data
+# Note: config.php is tracked for development, but should be ignored in production
+# Uncomment for production:
+# api/config.php
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+logs/
+error_log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency directories
+node_modules/
+vendor/
+bower_components/
+
+# Build directories
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.cache
+
+# PHP
+composer.phar
+composer.lock
+phpunit.xml
+
+# Database dumps (except sample data)
+*.sql.gz
+*.sql.zip
+dump.sql
+backup.sql
+
+# Keep sample data
+!database.sql
+!sample-data.sql
