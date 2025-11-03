@@ -12,14 +12,15 @@ define('ENV', getenv('APP_ENV') ?: 'development');
 // ==========================================
 if (ENV === 'production') {
     // Production settings (Hostinger)
-    // These should be set via environment variables
     define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_PORT', getenv('DB_PORT') ?: '3306');
     define('DB_USER', getenv('DB_USER') ?: 'root');
     define('DB_PASS', getenv('DB_PASS') ?: '');
     define('DB_NAME', getenv('DB_NAME') ?: 'sts_dashboard');
 } else {
     // Development settings (XAMPP)
     define('DB_HOST', 'localhost');
+    define('DB_PORT', '3307');  // ← ADD THIS LINE
     define('DB_USER', 'root');
     define('DB_PASS', '');
     define('DB_NAME', 'sts_dashboard');
