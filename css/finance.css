@@ -1,0 +1,615 @@
+/**
+ * Finance Module Styles
+ * Specific styles for finance pages (expenses, budgets, categories)
+ */
+
+/* ==========================================
+   Finance Tab Navigation
+   ========================================== */
+.finance-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0;
+}
+
+.finance-tab {
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    position: relative;
+}
+
+.finance-tab:hover {
+    color: var(--accent-color);
+    background-color: rgba(69, 196, 176, 0.05);
+}
+
+.finance-tab.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+    background-color: rgba(69, 196, 176, 0.05);
+}
+
+.finance-tab i {
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   Expense List/Table
+   ========================================== */
+.expense-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.expense-table thead th {
+    background-color: rgba(69, 196, 176, 0.05);
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.expense-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.expense-table tbody tr:hover {
+    background-color: rgba(69, 196, 176, 0.03);
+}
+
+.expense-table tbody td {
+    padding: 1rem;
+    color: var(--text-primary);
+}
+
+.expense-table tbody td:first-child {
+    font-weight: 500;
+}
+
+/* Expense amount styling */
+.expense-amount {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.expense-amount.negative {
+    color: var(--danger);
+}
+
+.expense-amount.positive {
+    color: var(--success);
+}
+
+/* ==========================================
+   Category Badge/Tag
+   ========================================== */
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.category-badge i {
+    font-size: 1rem;
+}
+
+.category-icon-box {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   Budget Progress Cards
+   ========================================== */
+.budget-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.budget-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(69, 196, 176, 0.15);
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.budget-info h5 {
+    margin: 0 0 0.25rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.budget-info .budget-type {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.budget-amounts {
+    text-align: right;
+}
+
+.budget-spent {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.budget-total {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.budget-progress-wrapper {
+    margin-bottom: 0.75rem;
+}
+
+.budget-progress {
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.budget-progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease, background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.budget-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.budget-progress-bar.on-track {
+    background: linear-gradient(90deg, #45C4B0, #5ed4c0);
+}
+
+.budget-progress-bar.warning {
+    background: linear-gradient(90deg, #ffa500, #ffb732);
+}
+
+.budget-progress-bar.exceeded {
+    background: linear-gradient(90deg, #ff6b6b, #ff8787);
+}
+
+.budget-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.budget-percentage {
+    font-weight: 600;
+}
+
+.budget-percentage.on-track { color: var(--success); }
+.budget-percentage.warning { color: var(--warning); }
+.budget-percentage.exceeded { color: var(--danger); }
+
+.budget-remaining {
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   Filter Bar
+   ========================================== */
+.filter-bar {
+    background: rgba(69, 196, 176, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-row {
+    display: flex;
+    gap: 1rem;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ==========================================
+   Expense Card (Alternative to Table)
+   ========================================== */
+.expense-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.expense-card:hover {
+    border-color: var(--accent-color);
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(69, 196, 176, 0.1);
+}
+
+.expense-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.expense-card-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.expense-card-title h5 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.expense-card-amount {
+    text-align: right;
+}
+
+.expense-card-amount .amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    display: block;
+}
+
+.expense-card-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.expense-card-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.expense-card-meta-item i {
+    color: var(--accent-color);
+}
+
+.expense-card-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* ==========================================
+   Quick Stats Row
+   ========================================== */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.quick-stat {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.quick-stat:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.quick-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.quick-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+/* ==========================================
+   Category Color Dots
+   ========================================== */
+.category-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+/* ==========================================
+   Empty State (No Data)
+   ========================================== */
+.finance-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.finance-empty-state i {
+    font-size: 5rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}
+
+.finance-empty-state h3 {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.finance-empty-state p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================
+   Action Buttons
+   ========================================== */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-icon {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.btn-edit {
+    background-color: rgba(77, 171, 247, 0.1);
+    border: 1px solid rgba(77, 171, 247, 0.3);
+    color: var(--info);
+}
+
+.btn-edit:hover {
+    background-color: var(--info);
+    color: var(--bg-primary);
+}
+
+.btn-delete {
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: var(--danger);
+}
+
+.btn-delete:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+/* ==========================================
+   Receipt Preview
+   ========================================== */
+.receipt-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--border-color);
+}
+
+.receipt-preview:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-color);
+}
+
+.receipt-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: rgba(69, 196, 176, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+}
+
+/* ==========================================
+   Pagination
+   ========================================== */
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.pagination-info {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pagination-controls .btn {
+    min-width: 40px;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 768px) {
+    .finance-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .finance-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    .expense-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        min-width: 100%;
+    }
+
+    .budget-card {
+        padding: 1rem;
+    }
+
+    .budget-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .budget-amounts {
+        text-align: left;
+    }
+
+    .expense-card-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .expense-card-amount {
+        text-align: left;
+    }
+
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   Print Styles
+   ========================================== */
+@media print {
+    .sidebar,
+    .top-bar,
+    .finance-tabs,
+    .filter-bar,
+    .action-buttons,
+    .pagination-wrapper {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+
+    .expense-table {
+        border: 1px solid #000;
+    }
+
+    .expense-table th,
+    .expense-table td {
+        border: 1px solid #000;
+        color: #000;
+    }
+}

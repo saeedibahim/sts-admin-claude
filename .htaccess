@@ -1,5 +1,19 @@
 # STS Dashboard - Apache Configuration
 
+# Enable PUT, DELETE methods
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE)$
+    RewriteRule ^(.*)$ $1 [L]
+</IfModule>
+
+# Allow all HTTP methods
+<LimitExcept GET POST PUT DELETE OPTIONS>
+    Order allow,deny
+    Allow from all
+</LimitExcept>
+
+
 # Enable Rewrite Engine
 <IfModule mod_rewrite.c>
     RewriteEngine On

@@ -38,12 +38,20 @@
                 </div>
             </div>
 
+
+            <!-- SideBar Navigation Menu -->
             <nav class="sidebar-nav">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="index.php">
                             <i class="bi bi-speedometer2"></i>
                             <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="finance/">
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Finance</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -147,6 +155,59 @@
                         </div>
                         <div class="stat-label">New Contact Forms</div>
                         <h2 class="stat-value" id="new-contacts">0</h2>
+                    </div>
+                </div>
+
+                <!-- NEW: Finance Overview Section -->
+                <h5 class="text-muted mb-3 mt-4">
+                    Finance Overview
+                    <a href="finance/" class="btn btn-sm btn-outline-accent float-end">View Details</a>
+                </h5>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                        </div>
+                        <div class="stat-label">This Month Expenses</div>
+                        <h2 class="stat-value" id="month-expenses">$0.00</h2>
+                        <div class="stat-change" id="expense-change">
+                            <i class="bi bi-arrow-up"></i> 0%
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="bi bi-receipt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-label">Total Transactions</div>
+                        <h2 class="stat-value" id="total-expenses">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="bi bi-piggy-bank"></i>
+                            </div>
+                        </div>
+                        <div class="stat-label">Active Budgets</div>
+                        <h2 class="stat-value" id="active-budgets">0</h2>
+                        <div class="stat-change" id="budget-alerts">
+                            <span class="text-success">All on track</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                        </div>
+                        <div class="stat-label">Avg Expense</div>
+                        <h2 class="stat-value" id="avg-expense">$0.00</h2>
                     </div>
                 </div>
 
@@ -288,6 +349,9 @@
 
             // Load statistics
             await loadStats();
+            
+            // Load finance stats
+            await loadFinanceStats();
         });
 
         async function loadStats() {
@@ -327,6 +391,73 @@
             } catch (error) {
                 console.error('Error loading stats:', error);
                 UI.error('An error occurred while loading dashboard data');
+            }
+        }
+
+        // NEW: Load finance statistics
+        // Load finance statistics
+        async function loadFinanceStats() {
+            try {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1;
+            
+                const response = await fetch(`/api/finance-stats.php?action=overview&year=${year}&month=${month}`);
+                
+                // Check if response is OK
+                if (!response.ok) {
+                    console.warn('Finance stats API not available');
+                    return;
+                }
+            
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    console.warn('Finance stats API returned non-JSON response');
+                    return;
+                }
+            
+                const result = await response.json();
+            
+                if (result.success) {
+                    const data = result.data;
+                
+                    // Update finance cards
+                    document.getElementById('month-expenses').textContent = 
+                        '$' + parseFloat(data.totals.total_amount).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    
+                    document.getElementById('total-expenses').textContent = data.totals.total_expenses;
+                    
+                    document.getElementById('avg-expense').textContent = 
+                        '$' + parseFloat(data.totals.average_amount).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    
+                    document.getElementById('active-budgets').textContent = data.budgets.total_budgets;
+                
+                    // Month-over-month change
+                    const changeEl = document.getElementById('expense-change');
+                    const change = data.comparison.percentage_change;
+                    if (change > 0) {
+                        changeEl.className = 'stat-change negative';
+                        changeEl.innerHTML = `<i class="bi bi-arrow-up"></i> +${change.toFixed(1)}%`;
+                    } else if (change < 0) {
+                        changeEl.className = 'stat-change positive';
+                        changeEl.innerHTML = `<i class="bi bi-arrow-down"></i> ${Math.abs(change).toFixed(1)}%`;
+                    } else {
+                        changeEl.className = 'stat-change';
+                        changeEl.innerHTML = `<i class="bi bi-dash"></i> No change`;
+                    }
+                
+                    // Budget alerts
+                    const budgetAlertsEl = document.getElementById('budget-alerts');
+                    if (data.budgets.exceeded_count > 0) {
+                        budgetAlertsEl.innerHTML = `<span class="text-danger">${data.budgets.exceeded_count} exceeded</span>`;
+                    } else {
+                        budgetAlertsEl.innerHTML = `<span class="text-success">All on track</span>`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading finance stats:', error);
+                // Don't show error to user, just fail silently
+                // Finance section will show default values (0)
             }
         }
 

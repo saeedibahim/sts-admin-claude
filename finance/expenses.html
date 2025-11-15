@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - STS Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/finance.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="bi bi-layers-fill"></i>
+                    <h3>STS Dashboard</h3>
+                </div>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-avatar">S</div>
+                    <div class="sidebar-user-details">
+                        <h6>Saeed</h6>
+                        <p>Admin</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.php">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Finance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../clients.html">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../contacts.html">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>Contacts</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../tasks.html">
+                            <i class="bi bi-check2-square"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../files.html">
+                            <i class="bi bi-folder-fill"></i>
+                            <span>Files</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../documents.html">
+                            <i class="bi bi-file-text-fill"></i>
+                            <span>Documents</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <a class="nav-link" href="../logout.php">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Expenses</h1>
+                </div>
+                <div class="top-bar-right">
+                    <button class="btn btn-outline-accent me-2" onclick="exportExpenses()">
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                    <button class="btn btn-accent" onclick="openAddExpenseModal()">
+                        <i class="bi bi-plus-lg"></i> Add Expense
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                
+                <!-- Finance Tabs -->
+                <div class="content-card mb-4">
+                    <div class="finance-tabs">
+                        <a href="index.html" class="finance-tab">
+                            <i class="bi bi-bar-chart"></i> Overview
+                        </a>
+                        <a href="expenses.html" class="finance-tab active">
+                            <i class="bi bi-receipt"></i> Expenses
+                        </a>
+                        <a href="budgets.html" class="finance-tab">
+                            <i class="bi bi-piggy-bank"></i> Budgets
+                        </a>
+                        <a href="categories.html" class="finance-tab">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats mb-4">
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="quickTotal">$0.00</h3>
+                        <p class="quick-stat-label">Total This Month</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="quickCount">0</h3>
+                        <p class="quick-stat-label">Transactions</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="quickAvg">$0.00</h3>
+                        <p class="quick-stat-label">Average</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="quickPending">0</h3>
+                        <p class="quick-stat-label">Pending</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search expenses...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Category</label>
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Reimbursed">Reimbursed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Start Date</label>
+                            <input type="date" class="form-control" id="startDateFilter">
+                        </div>
+                        <div class="filter-group">
+                            <label>End Date</label>
+                            <input type="date" class="form-control" id="endDateFilter">
+                        </div>
+                        <div class="filter-actions">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-accent" onclick="applyFilters()">
+                                <i class="bi bi-funnel"></i> Filter
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearFilters()">
+                                <i class="bi bi-x"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses Table -->
+                <div class="content-card">
+                    <div id="expensesTableContainer">
+                        <div class="text-center py-5">
+                            <div class="spinner-border spinner-border-accent" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Expense Modal -->
+    <div class="modal fade" id="expenseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="expenseModalTitle">Add Expense</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="expenseForm">
+                        <input type="hidden" id="expenseId">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseTitle" class="form-label">Title *</label>
+                                <input type="text" class="form-control" id="expenseTitle" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseAmount" class="form-label">Amount *</label>
+                                <input type="number" class="form-control" id="expenseAmount" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseCategory" class="form-label">Category *</label>
+                                <select class="form-select" id="expenseCategory" required>
+                                    <option value="">Select category...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseDate" class="form-label">Date *</label>
+                                <input type="date" class="form-control" id="expenseDate" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expensePaymentMethod" class="form-label">Payment Method</label>
+                                <select class="form-select" id="expensePaymentMethod">
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="PayPal">PayPal</option>
+                                    <option value="Stripe">Stripe</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseStatus" class="form-label">Status</label>
+                                <select class="form-select" id="expenseStatus">
+                                    <option value="Paid">Paid</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Reimbursed">Reimbursed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseVendor" class="form-label">Vendor</label>
+                                <input type="text" class="form-control" id="expenseVendor">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseReference" class="form-label">Reference Number</label>
+                                <input type="text" class="form-control" id="expenseReference">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="expenseDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="expenseDescription" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="expenseNotes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="expenseNotes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-accent" onclick="saveExpense()">
+                        <i class="bi bi-check-lg"></i> Save Expense
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toastContainer"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../js/ui.js"></script>
+    <script src="../js/finance.js"></script>
+    
+    <script>
+        let allExpenses = [];
+        let expenseModal;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            expenseModal = new bootstrap.Modal(document.getElementById('expenseModal'));
+            
+            // Set default date to today
+            document.getElementById('expenseDate').valueAsDate = new Date();
+            
+            // Set date filters to current month
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            
+            document.getElementById('startDateFilter').valueAsDate = firstDay;
+            document.getElementById('endDateFilter').valueAsDate = lastDay;
+            
+            // Load data
+            await loadCategories();
+            await loadExpenses();
+            
+            // Setup search with debounce
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => applyFilters(), 500);
+            });
+        });
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const categories = await fetchCategories();
+                
+                const categorySelect = document.getElementById('expenseCategory');
+                const categoryFilter = document.getElementById('categoryFilter');
+                
+                let optionsHTML = '<option value="">Select category...</option>';
+                let filterHTML = '<option value="">All Categories</option>';
+                
+                categories.forEach(cat => {
+                    optionsHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                    filterHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                });
+                
+                categorySelect.innerHTML = optionsHTML;
+                categoryFilter.innerHTML = filterHTML;
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load expenses
+        async function loadExpenses() {
+            try {
+                showLoading(document.getElementById('expensesTableContainer'));
+                
+                const filters = {
+                    action: 'list',
+                    start_date: document.getElementById('startDateFilter').value,
+                    end_date: document.getElementById('endDateFilter').value
+                };
+                
+                allExpenses = await fetchExpenses(filters);
+                updateQuickStats(allExpenses);
+                displayExpenses(allExpenses);
+            } catch (error) {
+                console.error('Error loading expenses:', error);
+                showEmptyState(
+                    document.getElementById('expensesTableContainer'),
+                    'exclamation-triangle',
+                    'Error Loading Expenses',
+                    'Please try again later'
+                );
+            }
+        }
+
+        // Update quick stats
+        function updateQuickStats(expenses) {
+            const total = expenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+            const count = expenses.length;
+            const avg = count > 0 ? total / count : 0;
+            const pending = expenses.filter(exp => exp.status === 'Pending').length;
+            
+            document.getElementById('quickTotal').textContent = formatCurrency(total);
+            document.getElementById('quickCount').textContent = count;
+            document.getElementById('quickAvg').textContent = formatCurrency(avg);
+            document.getElementById('quickPending').textContent = pending;
+        }
+
+        // Display expenses
+        function displayExpenses(expenses) {
+            const container = document.getElementById('expensesTableContainer');
+            
+            if (!expenses || expenses.length === 0) {
+                showEmptyState(
+                    container,
+                    'receipt',
+                    'No Expenses Found',
+                    'Add your first expense or adjust filters',
+                    '<button class="btn btn-accent" onclick="openAddExpenseModal()"><i class="bi bi-plus-lg"></i> Add Expense</button>'
+                );
+                return;
+            }
+
+            let html = `
+                <div class="table-responsive">
+                    <table class="expense-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Vendor</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            expenses.forEach(expense => {
+                html += `
+                    <tr>
+                        <td>${formatDate(expense.expense_date)}</td>
+                        <td><strong>${expense.title}</strong></td>
+                        <td>${getCategoryBadge({name: expense.category_name, color: expense.category_color, icon: expense.category_icon})}</td>
+                        <td><span class="expense-amount">${formatCurrency(expense.amount)}</span></td>
+                        <td><small class="text-muted">${expense.payment_method || '-'}</small></td>
+                        <td><small class="text-muted">${expense.vendor || '-'}</small></td>
+                        <td>${getStatusBadge(expense.status)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-icon btn-edit" onclick="editExpense(${expense.id})" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-icon btn-delete" onclick="deleteExpenseConfirm(${expense.id}, '${expense.title}')" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Apply filters
+        function applyFilters() {
+            let filtered = [...allExpenses];
+            
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const categoryId = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            
+            if (search) {
+                filtered = filtered.filter(exp => 
+                    exp.title.toLowerCase().includes(search) ||
+                    (exp.description && exp.description.toLowerCase().includes(search)) ||
+                    (exp.vendor && exp.vendor.toLowerCase().includes(search))
+                );
+            }
+            
+            if (categoryId) {
+                filtered = filtered.filter(exp => exp.category_id == categoryId);
+            }
+            
+            if (status) {
+                filtered = filtered.filter(exp => exp.status === status);
+            }
+            
+            updateQuickStats(filtered);
+            displayExpenses(filtered);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            
+            document.getElementById('startDateFilter').valueAsDate = firstDay;
+            document.getElementById('endDateFilter').valueAsDate = lastDay;
+            
+            loadExpenses();
+        }
+
+        // Open add expense modal
+        function openAddExpenseModal() {
+            document.getElementById('expenseModalTitle').textContent = 'Add Expense';
+            document.getElementById('expenseForm').reset();
+            document.getElementById('expenseId').value = '';
+            document.getElementById('expenseDate').valueAsDate = new Date();
+            expenseModal.show();
+        }
+
+        // Edit expense
+        async function editExpense(id) {
+            try {
+                const expense = await fetchExpense(id);
+                
+                if (expense) {
+                    document.getElementById('expenseModalTitle').textContent = 'Edit Expense';
+                    document.getElementById('expenseId').value = expense.id;
+                    document.getElementById('expenseTitle').value = expense.title;
+                    document.getElementById('expenseAmount').value = expense.amount;
+                    document.getElementById('expenseCategory').value = expense.category_id;
+                    document.getElementById('expenseDate').value = expense.expense_date;
+                    document.getElementById('expensePaymentMethod').value = expense.payment_method;
+                    document.getElementById('expenseStatus').value = expense.status;
+                    document.getElementById('expenseVendor').value = expense.vendor || '';
+                    document.getElementById('expenseReference').value = expense.reference_number || '';
+                    document.getElementById('expenseDescription').value = expense.description || '';
+                    document.getElementById('expenseNotes').value = expense.notes || '';
+                    
+                    expenseModal.show();
+                }
+            } catch (error) {
+                console.error('Error loading expense:', error);
+                showNotification('Error loading expense', 'error');
+            }
+        }
+
+        // Save expense
+        async function saveExpense() {
+            const form = document.getElementById('expenseForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const expenseData = {
+                title: document.getElementById('expenseTitle').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                category_id: document.getElementById('expenseCategory').value,
+                expense_date: document.getElementById('expenseDate').value,
+                payment_method: document.getElementById('expensePaymentMethod').value,
+                status: document.getElementById('expenseStatus').value,
+                vendor: document.getElementById('expenseVendor').value,
+                reference_number: document.getElementById('expenseReference').value,
+                description: document.getElementById('expenseDescription').value,
+                notes: document.getElementById('expenseNotes').value
+            };
+            
+            const expenseId = document.getElementById('expenseId').value;
+            
+            let result;
+            if (expenseId) {
+                result = await updateExpense(expenseId, expenseData);
+            } else {
+                result = await createExpense(expenseData);
+            }
+            
+            if (result) {
+                expenseModal.hide();
+                loadExpenses();
+            }
+        }
+
+        // Delete expense
+        async function deleteExpenseConfirm(id, title) {
+            if (confirmDelete(title)) {
+                const result = await deleteExpense(id);
+                if (result) {
+                    loadExpenses();
+                }
+            }
+        }
+
+        // Export expenses
+        function exportExpenses() {
+            const filtered = allExpenses; // You can apply current filters here if needed
+            exportToCSV(filtered, `expenses_${new Date().toISOString().split('T')[0]}.csv`);
+        }
+    </script>
+</body>
+</html>

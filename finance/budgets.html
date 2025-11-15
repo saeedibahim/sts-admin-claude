@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgets - STS Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/finance.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="bi bi-layers-fill"></i>
+                    <h3>STS Dashboard</h3>
+                </div>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-avatar">S</div>
+                    <div class="sidebar-user-details">
+                        <h6>Saeed</h6>
+                        <p>Admin</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.php">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Finance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../clients.html">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../contacts.html">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>Contacts</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../tasks.html">
+                            <i class="bi bi-check2-square"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../files.html">
+                            <i class="bi bi-folder-fill"></i>
+                            <span>Files</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../documents.html">
+                            <i class="bi bi-file-text-fill"></i>
+                            <span>Documents</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <a class="nav-link" href="../logout.php">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Budgets</h1>
+                </div>
+                <div class="top-bar-right">
+                    <button class="btn btn-accent" onclick="openAddBudgetModal()">
+                        <i class="bi bi-plus-lg"></i> Create Budget
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                
+                <!-- Finance Tabs -->
+                <div class="content-card mb-4">
+                    <div class="finance-tabs">
+                        <a href="index.html" class="finance-tab">
+                            <i class="bi bi-bar-chart"></i> Overview
+                        </a>
+                        <a href="expenses.html" class="finance-tab">
+                            <i class="bi bi-receipt"></i> Expenses
+                        </a>
+                        <a href="budgets.html" class="finance-tab active">
+                            <i class="bi bi-piggy-bank"></i> Budgets
+                        </a>
+                        <a href="categories.html" class="finance-tab">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats mb-4">
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="totalBudgets">0</h3>
+                        <p class="quick-stat-label">Total Budgets</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value" id="activeBudgets">0</h3>
+                        <p class="quick-stat-label">Active</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value text-danger" id="exceededBudgets">0</h3>
+                        <p class="quick-stat-label">Exceeded</p>
+                    </div>
+                    <div class="quick-stat">
+                        <h3 class="quick-stat-value text-warning" id="warningBudgets">0</h3>
+                        <p class="quick-stat-label">At Risk</p>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar mb-4">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>Budget Type</label>
+                            <select class="form-select" id="typeFilter">
+                                <option value="">All Types</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                                <option value="Annual">Annual</option>
+                                <option value="Category">Category</option>
+                                <option value="Client">Client</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Exceeded">Exceeded</option>
+                                <option value="Paused">Paused</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-accent" onclick="applyFilters()">
+                                <i class="bi bi-funnel"></i> Filter
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearFilters()">
+                                <i class="bi bi-x"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budgets List -->
+                <div id="budgetsContainer">
+                    <div class="text-center py-5">
+                        <div class="spinner-border spinner-border-accent" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Budget Modal -->
+    <div class="modal fade" id="budgetModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="budgetModalTitle">Create Budget</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="budgetForm">
+                        <input type="hidden" id="budgetId">
+                        
+                        <div class="mb-3">
+                            <label for="budgetName" class="form-label">Budget Name *</label>
+                            <input type="text" class="form-control" id="budgetName" required 
+                                   placeholder="e.g., Marketing Budget - Q1 2025">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetType" class="form-label">Budget Type *</label>
+                                <select class="form-select" id="budgetType" required onchange="handleBudgetTypeChange()">
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                    <option value="Annual">Annual</option>
+                                    <option value="Category">Category-Specific</option>
+                                    <option value="Client">Client-Specific</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetAmount" class="form-label">Budget Amount *</label>
+                                <input type="number" class="form-control" id="budgetAmount" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="row" id="categoryRow" style="display: none;">
+                            <div class="col-md-12 mb-3">
+                                <label for="budgetCategory" class="form-label">Category</label>
+                                <select class="form-select" id="budgetCategory">
+                                    <option value="">Select category...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetStartDate" class="form-label">Start Date *</label>
+                                <input type="date" class="form-control" id="budgetStartDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetEndDate" class="form-label">End Date *</label>
+                                <input type="date" class="form-control" id="budgetEndDate" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetThreshold" class="form-label">Alert Threshold (%)</label>
+                                <input type="number" class="form-control" id="budgetThreshold" 
+                                       min="0" max="100" value="80">
+                                <small class="text-muted">Get alerted when spending reaches this %</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="budgetStatus" class="form-label">Status</label>
+                                <select class="form-select" id="budgetStatus">
+                                    <option value="Active">Active</option>
+                                    <option value="Paused">Paused</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="budgetNotes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="budgetNotes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-accent" onclick="saveBudget()">
+                        <i class="bi bi-check-lg"></i> Save Budget
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toastContainer"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../js/ui.js"></script>
+    <script src="../js/finance.js"></script>
+    
+    <script>
+        let allBudgets = [];
+        let budgetModal;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            budgetModal = new bootstrap.Modal(document.getElementById('budgetModal'));
+            
+            // Set default dates to current month
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            
+            document.getElementById('budgetStartDate').valueAsDate = firstDay;
+            document.getElementById('budgetEndDate').valueAsDate = lastDay;
+            
+            await loadCategories();
+            await loadBudgets();
+        });
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const categories = await fetchCategories();
+                const select = document.getElementById('budgetCategory');
+                
+                let html = '<option value="">Select category...</option>';
+                categories.forEach(cat => {
+                    html += `<option value="${cat.id}">${cat.name}</option>`;
+                });
+                
+                select.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load budgets
+        async function loadBudgets() {
+            try {
+                showLoading(document.getElementById('budgetsContainer'));
+                
+                allBudgets = await fetchBudgets({ active_only: 1 });
+                updateQuickStats(allBudgets);
+                displayBudgets(allBudgets);
+            } catch (error) {
+                console.error('Error loading budgets:', error);
+                showEmptyState(
+                    document.getElementById('budgetsContainer'),
+                    'exclamation-triangle',
+                    'Error Loading Budgets',
+                    'Please try again later'
+                );
+            }
+        }
+
+        // Update quick stats
+        function updateQuickStats(budgets) {
+            const total = budgets.length;
+            const active = budgets.filter(b => b.status === 'Active').length;
+            const exceeded = budgets.filter(b => b.is_exceeded).length;
+            const warning = budgets.filter(b => b.is_warning && !b.is_exceeded).length;
+            
+            document.getElementById('totalBudgets').textContent = total;
+            document.getElementById('activeBudgets').textContent = active;
+            document.getElementById('exceededBudgets').textContent = exceeded;
+            document.getElementById('warningBudgets').textContent = warning;
+        }
+
+       // Display budgets
+function displayBudgets(budgets) {
+    const container = document.getElementById('budgetsContainer');
+    
+    if (!budgets || budgets.length === 0) {
+        showEmptyState(
+            container,
+            'piggy-bank',
+            'No Budgets Found',
+            'Create your first budget to track spending',
+            '<button class="btn btn-accent" onclick="openAddBudgetModal()"><i class="bi bi-plus-lg"></i> Create Budget</button>'
+        );
+        return;
+    }
+
+    let html = '<div class="row">';
+
+    budgets.forEach(budget => {
+        // Safe defaults for missing values
+        const spentPercentage = budget.spent_percentage || 0;
+        const spentAmount = budget.spent_amount || 0;
+        const remainingAmount = budget.remaining_amount || budget.amount || 0;
+        const isExceeded = budget.is_exceeded || false;
+        
+        const status = getBudgetStatus(spentPercentage, isExceeded);
+        const percentage = Math.min(spentPercentage, 100);
+        
+        html += `
+            <div class="col-md-6 mb-4">
+                <div class="budget-card">
+                    <div class="budget-header">
+                        <div class="budget-info">
+                            <h5>${budget.name}</h5>
+                            <span class="budget-type">${budget.budget_type}</span>
+                            ${budget.category_name ? `
+                                <span class="category-badge mt-2" style="background: ${budget.category_color}20; color: ${budget.category_color};">
+                                    ${budget.category_name}
+                                </span>
+                            ` : ''}
+                        </div>
+                        <div class="budget-amounts">
+                            <div class="budget-spent">${formatCurrency(spentAmount)}</div>
+                            <div class="budget-total">of ${formatCurrency(budget.amount)}</div>
+                        </div>
+                    </div>
+
+                    <div class="budget-progress-wrapper">
+                        <div class="budget-progress">
+                            <div class="budget-progress-bar ${status.class}" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-stats">
+                        <span class="budget-percentage ${status.class}">
+                            ${spentPercentage.toFixed(1)}% used
+                        </span>
+                        <span class="budget-remaining">
+                            ${formatCurrency(remainingAmount)} remaining
+                        </span>
+                    </div>
+
+                    <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-color);">
+                        <div class="d-flex justify-content-between align-items-center text-muted small">
+                            <span>
+                                <i class="bi bi-calendar"></i>
+                                ${formatDate(budget.period_start)} - ${formatDate(budget.period_end)}
+                            </span>
+                            <div class="action-buttons">
+                                <button class="btn btn-icon btn-edit" onclick="editBudget(${budget.id})" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-icon btn-delete" onclick="deleteBudgetConfirm(${budget.id}, '${budget.name}')" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+        // Apply filters
+        function applyFilters() {
+            let filtered = [...allBudgets];
+            
+            const type = document.getElementById('typeFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            
+            if (type) {
+                filtered = filtered.filter(b => b.budget_type === type);
+            }
+            
+            if (status) {
+                filtered = filtered.filter(b => b.status === status);
+            }
+            
+            updateQuickStats(filtered);
+            displayBudgets(filtered);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            updateQuickStats(allBudgets);
+            displayBudgets(allBudgets);
+        }
+
+        // Handle budget type change
+        function handleBudgetTypeChange() {
+            const type = document.getElementById('budgetType').value;
+            const categoryRow = document.getElementById('categoryRow');
+            
+            if (type === 'Category') {
+                categoryRow.style.display = 'block';
+                document.getElementById('budgetCategory').required = true;
+            } else {
+                categoryRow.style.display = 'none';
+                document.getElementById('budgetCategory').required = false;
+            }
+        }
+
+        // Open add budget modal
+        function openAddBudgetModal() {
+            document.getElementById('budgetModalTitle').textContent = 'Create Budget';
+            document.getElementById('budgetForm').reset();
+            document.getElementById('budgetId').value = '';
+            
+            // Set defaults
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            
+            document.getElementById('budgetStartDate').valueAsDate = firstDay;
+            document.getElementById('budgetEndDate').valueAsDate = lastDay;
+            document.getElementById('budgetThreshold').value = 80;
+            document.getElementById('categoryRow').style.display = 'none';
+            
+            budgetModal.show();
+        }
+
+        // Edit budget
+        async function editBudget(id) {
+            try {
+                const budget = allBudgets.find(b => b.id === id);
+                
+                if (budget) {
+                    document.getElementById('budgetModalTitle').textContent = 'Edit Budget';
+                    document.getElementById('budgetId').value = budget.id;
+                    document.getElementById('budgetName').value = budget.name;
+                    document.getElementById('budgetType').value = budget.budget_type;
+                    document.getElementById('budgetAmount').value = budget.amount;
+                    document.getElementById('budgetStartDate').value = budget.period_start;
+                    document.getElementById('budgetEndDate').value = budget.period_end;
+                    document.getElementById('budgetThreshold').value = budget.alert_threshold;
+                    document.getElementById('budgetStatus').value = budget.status;
+                    document.getElementById('budgetNotes').value = budget.notes || '';
+                    
+                    if (budget.budget_type === 'Category') {
+                        document.getElementById('categoryRow').style.display = 'block';
+                        document.getElementById('budgetCategory').value = budget.category_id || '';
+                    }
+                    
+                    budgetModal.show();
+                }
+            } catch (error) {
+                console.error('Error loading budget:', error);
+                showNotification('Error loading budget', 'error');
+            }
+        }
+
+        // Save budget
+        async function saveBudget() {
+            const form = document.getElementById('budgetForm');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const budgetData = {
+                name: document.getElementById('budgetName').value,
+                budget_type: document.getElementById('budgetType').value,
+                amount: parseFloat(document.getElementById('budgetAmount').value),
+                period_start: document.getElementById('budgetStartDate').value,
+                period_end: document.getElementById('budgetEndDate').value,
+                alert_threshold: parseInt(document.getElementById('budgetThreshold').value),
+                alert_enabled: 1,
+                status: document.getElementById('budgetStatus').value,
+                notes: document.getElementById('budgetNotes').value
+            };
+
+            if (budgetData.budget_type === 'Category') {
+                budgetData.category_id = document.getElementById('budgetCategory').value || null;
+            }
+
+            const budgetId = document.getElementById('budgetId').value;
+
+            try {
+                console.log('Sending budget data:', budgetData); // DEBUG
+
+                const response = await fetch('/api/budgets.php', {
+                    method: budgetId ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(budgetId ? { id: budgetId, ...budgetData } : budgetData)
+                });
+
+                console.log('Response status:', response.status); // DEBUG
+
+                // Get response as text first
+                const responseText = await response.text();
+                console.log('Response text:', responseText); // DEBUG
+
+                // Try to parse as JSON
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('JSON Parse Error. Response was:', responseText);
+                    showNotification('Error: Server returned invalid response', 'error');
+                    return;
+                }
+
+                if (result.success) {
+                    showNotification(budgetId ? 'Budget updated successfully' : 'Budget created successfully', 'success');
+                    budgetModal.hide();
+                    loadBudgets();
+                } else {
+                    showNotification(result.message || 'Operation failed', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving budget:', error);
+                showNotification('Error saving budget: ' + error.message, 'error');
+            }
+        }
+
+        // Delete budget
+        async function deleteBudgetConfirm(id, name) {
+            if (confirmDelete(name)) {
+                try {
+                    const response = await fetch('/api/budgets.php', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showNotification('Budget deleted successfully', 'success');
+                        loadBudgets();
+                    } else {
+                        showNotification(result.message || 'Delete failed', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting budget:', error);
+                    showNotification('Error deleting budget', 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
