@@ -402,8 +402,8 @@
                 const year = now.getFullYear();
                 const month = now.getMonth() + 1;
             
-                const response = await fetch(`/api/finance-stats.php?action=overview&year=${year}&month=${month}`);
-                
+                const response = await fetch(`/sts-admin-claude/api/finance-stats.php?action=overview&year=${year}&month=${month}`);
+
                 // Check if response is OK
                 if (!response.ok) {
                     console.warn('Finance stats API not available');
@@ -424,12 +424,12 @@
                     // Update finance cards
                     document.getElementById('month-expenses').textContent = 
                         '$' + parseFloat(data.totals.total_amount).toLocaleString('en-US', {minimumFractionDigits: 2});
-                    
+
                     document.getElementById('total-expenses').textContent = data.totals.total_expenses;
-                    
+
                     document.getElementById('avg-expense').textContent = 
                         '$' + parseFloat(data.totals.average_amount).toLocaleString('en-US', {minimumFractionDigits: 2});
-                    
+
                     document.getElementById('active-budgets').textContent = data.budgets.total_budgets;
                 
                     // Month-over-month change

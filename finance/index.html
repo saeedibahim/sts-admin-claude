@@ -1,295 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Finance Overview - STS Dashboard</title>
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/finance.css">
-    
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/finance.css" />
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <i class="bi bi-layers-fill"></i>
-                    <h3>STS Dashboard</h3>
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <i class="bi bi-layers-fill"></i>
+            <h3>STS Dashboard</h3>
+          </div>
+        </div>
+
+        <div class="sidebar-user">
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-avatar">S</div>
+            <div class="sidebar-user-details">
+              <h6>Saeed</h6>
+              <p>Admin</p>
+            </div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.php">
+                <i class="bi bi-speedometer2"></i>
+                <span>Overview</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">
+                <i class="bi bi-cash-stack"></i>
+                <span>Finance</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../clients.html">
+                <i class="bi bi-people-fill"></i>
+                <span>Clients</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../contacts.html">
+                <i class="bi bi-envelope-fill"></i>
+                <span>Contacts</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../tasks.html">
+                <i class="bi bi-check2-square"></i>
+                <span>Tasks</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../files.html">
+                <i class="bi bi-folder-fill"></i>
+                <span>Files</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../documents.html">
+                <i class="bi bi-file-text-fill"></i>
+                <span>Documents</span>
+              </a>
+            </li>
+            <li class="nav-item mt-4">
+              <a class="nav-link" href="../logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Sidebar Overlay (Mobile) -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <div class="top-bar-left">
+            <button class="menu-toggle" id="menuToggle">
+              <i class="bi bi-list"></i>
+            </button>
+            <h1 class="page-title">Finance Overview</h1>
+          </div>
+          <div class="top-bar-right">
+            <a href="expenses.html" class="btn btn-accent">
+              <i class="bi bi-plus-lg"></i> Add Expense
+            </a>
+          </div>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+          <!-- Finance Tabs -->
+          <div class="content-card mb-4">
+            <div class="finance-tabs">
+              <a href="index.html" class="finance-tab active">
+                <i class="bi bi-bar-chart"></i> Overview
+              </a>
+              <a href="expenses.html" class="finance-tab">
+                <i class="bi bi-receipt"></i> Expenses
+              </a>
+              <a href="budgets.html" class="finance-tab">
+                <i class="bi bi-piggy-bank"></i> Budgets
+              </a>
+              <a href="categories.html" class="finance-tab">
+                <i class="bi bi-tags"></i> Categories
+              </a>
+            </div>
+          </div>
+
+          <!-- Period Selector -->
+          <div class="content-card mb-4">
+            <div class="d-flex gap-3 align-items-center flex-wrap">
+              <label class="form-label mb-0">Period:</label>
+              <select
+                class="form-select"
+                id="periodYear"
+                style="max-width: 150px"
+              >
+                <option value="2025" selected>2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+              <select
+                class="form-select"
+                id="periodMonth"
+                style="max-width: 150px"
+              >
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11" selected>November</option>
+                <option value="12">December</option>
+              </select>
+              <button class="btn btn-accent" onclick="loadFinanceOverview()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon">
+                  <i class="bi bi-cash"></i>
                 </div>
+              </div>
+              <div class="stat-label">Total Expenses</div>
+              <h2 class="stat-value" id="totalExpenses">$0.00</h2>
+              <div class="stat-change" id="expenseChange">
+                <i class="bi bi-dash"></i> No data
+              </div>
             </div>
 
-            <div class="sidebar-user">
-                <div class="sidebar-user-info">
-                    <div class="sidebar-user-avatar">S</div>
-                    <div class="sidebar-user-details">
-                        <h6>Saeed</h6>
-                        <p>Admin</p>
-                    </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon">
+                  <i class="bi bi-receipt"></i>
                 </div>
+              </div>
+              <div class="stat-label">Transactions</div>
+              <h2 class="stat-value" id="expenseCount">0</h2>
+              <div class="stat-change">
+                <span id="expenseCountText" class="text-muted"
+                  >transactions this month</span
+                >
+              </div>
             </div>
 
-            <nav class="sidebar-nav">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.php">
-                            <i class="bi bi-speedometer2"></i>
-                            <span>Overview</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">
-                            <i class="bi bi-cash-stack"></i>
-                            <span>Finance</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../clients.html">
-                            <i class="bi bi-people-fill"></i>
-                            <span>Clients</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../contacts.html">
-                            <i class="bi bi-envelope-fill"></i>
-                            <span>Contacts</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../tasks.html">
-                            <i class="bi bi-check2-square"></i>
-                            <span>Tasks</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../files.html">
-                            <i class="bi bi-folder-fill"></i>
-                            <span>Files</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../documents.html">
-                            <i class="bi bi-file-text-fill"></i>
-                            <span>Documents</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mt-4">
-                        <a class="nav-link" href="../logout.php">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- Sidebar Overlay (Mobile) -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Top Bar -->
-            <div class="top-bar">
-                <div class="top-bar-left">
-                    <button class="menu-toggle" id="menuToggle">
-                        <i class="bi bi-list"></i>
-                    </button>
-                    <h1 class="page-title">Finance Overview</h1>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon">
+                  <i class="bi bi-graph-up"></i>
                 </div>
-                <div class="top-bar-right">
-                    <a href="expenses.html" class="btn btn-accent">
-                        <i class="bi bi-plus-lg"></i> Add Expense
-                    </a>
-                </div>
+              </div>
+              <div class="stat-label">Average Expense</div>
+              <h2 class="stat-value" id="avgExpense">$0.00</h2>
+              <div class="stat-change">
+                <span id="expenseRange" class="text-muted">-</span>
+              </div>
             </div>
 
-            <!-- Content Wrapper -->
-            <div class="content-wrapper">
-                
-                <!-- Finance Tabs -->
-                <div class="content-card mb-4">
-                    <div class="finance-tabs">
-                        <a href="index.html" class="finance-tab active">
-                            <i class="bi bi-bar-chart"></i> Overview
-                        </a>
-                        <a href="expenses.html" class="finance-tab">
-                            <i class="bi bi-receipt"></i> Expenses
-                        </a>
-                        <a href="budgets.html" class="finance-tab">
-                            <i class="bi bi-piggy-bank"></i> Budgets
-                        </a>
-                        <a href="categories.html" class="finance-tab">
-                            <i class="bi bi-tags"></i> Categories
-                        </a>
-                    </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon">
+                  <i class="bi bi-piggy-bank"></i>
                 </div>
-
-                <!-- Period Selector -->
-                <div class="content-card mb-4">
-                    <div class="d-flex gap-3 align-items-center flex-wrap">
-                        <label class="form-label mb-0">Period:</label>
-                        <select class="form-select" id="periodYear" style="max-width: 150px;">
-                            <option value="2025" selected>2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                        </select>
-                        <select class="form-select" id="periodMonth" style="max-width: 150px;">
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11" selected>November</option>
-                            <option value="12">December</option>
-                        </select>
-                        <button class="btn btn-accent" onclick="loadFinanceOverview()">
-                            <i class="bi bi-arrow-clockwise"></i> Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Statistics Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="bi bi-cash"></i>
-                            </div>
-                        </div>
-                        <div class="stat-label">Total Expenses</div>
-                        <h2 class="stat-value" id="totalExpenses">$0.00</h2>
-                        <div class="stat-change" id="expenseChange">
-                            <i class="bi bi-dash"></i> No data
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="bi bi-receipt"></i>
-                            </div>
-                        </div>
-                        <div class="stat-label">Transactions</div>
-                        <h2 class="stat-value" id="expenseCount">0</h2>
-                        <div class="stat-change">
-                            <span id="expenseCountText" class="text-muted">transactions this month</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="bi bi-graph-up"></i>
-                            </div>
-                        </div>
-                        <div class="stat-label">Average Expense</div>
-                        <h2 class="stat-value" id="avgExpense">$0.00</h2>
-                        <div class="stat-change">
-                            <span id="expenseRange" class="text-muted">-</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="bi bi-piggy-bank"></i>
-                            </div>
-                        </div>
-                        <div class="stat-label">Active Budgets</div>
-                        <h2 class="stat-value" id="activeBudgets">0</h2>
-                        <div class="stat-change" id="budgetStatus">
-                            <span class="text-muted">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts Row -->
-                <div class="row mb-4">
-                    <!-- Category Breakdown -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Spending by Category</h3>
-                            </div>
-                            <div style="position: relative; height: 300px;" id="categoryChartContainer">
-                                <canvas id="categoryChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Trend Chart -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Expense Trends</h3>
-                                <select class="form-select" id="trendPeriod" style="max-width: 150px;" onchange="loadExpenseTrends()">
-                                    <option value="3months">Last 3 Months</option>
-                                    <option value="6months" selected>Last 6 Months</option>
-                                    <option value="year">Last Year</option>
-                                </select>
-                            </div>
-                            <div style="position: relative; height: 300px;">
-                                <canvas id="trendChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Budget Performance & Recent Expenses -->
-                <div class="row">
-                    <!-- Budget Performance -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Budget Performance</h3>
-                                <a href="budgets.html" class="btn btn-sm btn-outline-accent">View All</a>
-                            </div>
-                            <div id="budgetPerformanceList">
-                                <div class="text-center py-4">
-                                    <div class="spinner-border spinner-border-accent" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Expenses -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Recent Expenses</h3>
-                                <a href="expenses.html" class="btn btn-sm btn-outline-accent">View All</a>
-                            </div>
-                            <div id="recentExpensesList">
-                                <div class="text-center py-4">
-                                    <div class="spinner-border spinner-border-accent" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+              </div>
+              <div class="stat-label">Active Budgets</div>
+              <h2 class="stat-value" id="activeBudgets">0</h2>
+              <div class="stat-change" id="budgetStatus">
+                <span class="text-muted">-</span>
+              </div>
             </div>
-        </main>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="row mb-4">
+            <!-- Category Breakdown -->
+            <div class="col-lg-6 mb-4">
+              <div class="content-card">
+                <div class="content-card-header">
+                  <h3 class="content-card-title">Spending by Category</h3>
+                </div>
+                <div
+                  style="position: relative; height: 300px; color: #fff;"
+                  id="categoryChartContainer"
+                >
+                  <canvas id="categoryChart"></canvas>
+                </div> 
+              </div>
+            </div>
+
+            <!-- Trend Chart -->
+            <div class="col-lg-6 mb-4">
+              <div class="content-card">
+                <div class="content-card-header">
+                  <h3 class="content-card-title">Expense Trends</h3>
+                  <select
+                    class="form-select"
+                    id="trendPeriod"
+                    style="max-width: 150px"
+                    onchange="loadExpenseTrends()"
+                  >
+                    <option value="3months">Last 3 Months</option>
+                    <option value="6months" selected>Last 6 Months</option>
+                    <option value="year">Last Year</option>
+                  </select>
+                </div>
+                <div style="position: relative; height: 300px">
+                  <canvas id="trendChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Performance & Recent Expenses -->
+          <div class="row">
+            <!-- Budget Performance -->
+            <div class="col-lg-6 mb-4">
+              <div class="content-card">
+                <div class="content-card-header">
+                  <h3 class="content-card-title">Budget Performance</h3>
+                  <a href="budgets.html" class="btn btn-sm btn-outline-accent"
+                    >View All</a
+                  >
+                </div>
+                <div id="budgetPerformanceList">
+                  <div class="text-center py-4">
+                    <div
+                      class="spinner-border spinner-border-accent"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Expenses -->
+            <div class="col-lg-6 mb-4">
+              <div class="content-card">
+                <div class="content-card-header">
+                  <h3 class="content-card-title">Recent Expenses</h3>
+                  <a href="expenses.html" class="btn btn-sm btn-outline-accent"
+                    >View All</a
+                  >
+                </div>
+                <div id="recentExpensesList">
+                  <div class="text-center py-4">
+                    <div
+                      class="spinner-border spinner-border-accent"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- Bootstrap JS -->
@@ -298,291 +330,335 @@
     <!-- Custom JS -->
     <script src="../js/ui.js"></script>
     <script src="../js/finance.js"></script>
-    
+
     <script>
-        let categoryChart = null;
-        let trendChart = null;
+      let categoryChart = null;
+      let trendChart = null;
 
-        // Load on page ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set current month
-            const currentMonth = new Date().getMonth() + 1;
-            document.getElementById('periodMonth').value = currentMonth;
-            
-            loadFinanceOverview();
-            loadExpenseTrends();
+      // Load on page ready
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set current month
+        const currentMonth = new Date().getMonth() + 1;
+        document.getElementById("periodMonth").value = currentMonth;
+
+        loadFinanceOverview();
+        loadExpenseTrends();
+        loadCategoryBreakdown();
+        loadBudgetPerformance();
+      });
+
+      // Load finance overview
+      async function loadFinanceOverview() {
+        try {
+          const year = document.getElementById("periodYear").value;
+          const month = document.getElementById("periodMonth").value;
+
+          const response = await fetch(
+            "/sts-admin-claude/api/finance-stats.php?action=overview&year=${year}&month=${month}"
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            const data = result.data;
+
+            // Update stats
+            document.getElementById("totalExpenses").textContent =
+              formatCurrency(data.totals.total_amount);
+            document.getElementById("expenseCount").textContent =
+              data.totals.total_expenses;
+            document.getElementById(
+              "expenseCountText"
+            ).textContent = `${data.totals.total_expenses} transactions`;
+            document.getElementById("avgExpense").textContent = formatCurrency(
+              data.totals.average_amount
+            );
+
+            if (data.totals.total_expenses > 0) {
+              document.getElementById(
+                "expenseRange"
+              ).textContent = `Range: ${formatCurrency(
+                data.totals.lowest_expense
+              )} - ${formatCurrency(data.totals.highest_expense)}`;
+            }
+
+            document.getElementById("activeBudgets").textContent =
+              data.budgets.total_budgets;
+
+            const budgetStatusEl = document.getElementById("budgetStatus");
+            if (data.budgets.exceeded_count > 0) {
+              budgetStatusEl.innerHTML = `<span class="text-danger">${data.budgets.exceeded_count} exceeded</span>`;
+            } else {
+              budgetStatusEl.innerHTML = `<span class="text-success">All on track</span>`;
+            }
+
+            // Month-over-month change
+            const changeEl = document.getElementById("expenseChange");
+            const change = data.comparison.percentage_change;
+            if (change > 0) {
+              changeEl.className = "stat-change negative";
+              changeEl.innerHTML = `<i class="bi bi-arrow-up"></i> +${change.toFixed(
+                1
+              )}% from last month`;
+            } else if (change < 0) {
+              changeEl.className = "stat-change positive";
+              changeEl.innerHTML = `<i class="bi bi-arrow-down"></i> ${Math.abs(
+                change
+              ).toFixed(1)}% from last month`;
+            } else {
+              changeEl.className = "stat-change";
+              changeEl.innerHTML = `<i class="bi bi-dash"></i> No change`;
+            }
+
+            loadRecentExpenses(data.recent_expenses);
             loadCategoryBreakdown();
-            loadBudgetPerformance();
-        });
-
-        // Load finance overview
-        async function loadFinanceOverview() {
-            try {
-                const year = document.getElementById('periodYear').value;
-                const month = document.getElementById('periodMonth').value;
-
-                const response = await fetch(`/api/finance-stats.php?action=overview&year=${year}&month=${month}`);
-                const result = await response.json();
-
-                if (result.success) {
-                    const data = result.data;
-
-                    // Update stats
-                    document.getElementById('totalExpenses').textContent = formatCurrency(data.totals.total_amount);
-                    document.getElementById('expenseCount').textContent = data.totals.total_expenses;
-                    document.getElementById('expenseCountText').textContent = `${data.totals.total_expenses} transactions`;
-                    document.getElementById('avgExpense').textContent = formatCurrency(data.totals.average_amount);
-                    
-                    if (data.totals.total_expenses > 0) {
-                        document.getElementById('expenseRange').textContent = 
-                            `Range: ${formatCurrency(data.totals.lowest_expense)} - ${formatCurrency(data.totals.highest_expense)}`;
-                    }
-
-                    document.getElementById('activeBudgets').textContent = data.budgets.total_budgets;
-                    
-                    const budgetStatusEl = document.getElementById('budgetStatus');
-                    if (data.budgets.exceeded_count > 0) {
-                        budgetStatusEl.innerHTML = `<span class="text-danger">${data.budgets.exceeded_count} exceeded</span>`;
-                    } else {
-                        budgetStatusEl.innerHTML = `<span class="text-success">All on track</span>`;
-                    }
-
-                    // Month-over-month change
-                    const changeEl = document.getElementById('expenseChange');
-                    const change = data.comparison.percentage_change;
-                    if (change > 0) {
-                        changeEl.className = 'stat-change negative';
-                        changeEl.innerHTML = `<i class="bi bi-arrow-up"></i> +${change.toFixed(1)}% from last month`;
-                    } else if (change < 0) {
-                        changeEl.className = 'stat-change positive';
-                        changeEl.innerHTML = `<i class="bi bi-arrow-down"></i> ${Math.abs(change).toFixed(1)}% from last month`;
-                    } else {
-                        changeEl.className = 'stat-change';
-                        changeEl.innerHTML = `<i class="bi bi-dash"></i> No change`;
-                    }
-
-                    loadRecentExpenses(data.recent_expenses);
-                    loadCategoryBreakdown();
-                }
-            } catch (error) {
-                console.error('Error loading overview:', error);
-            }
+          }
+        } catch (error) {
+          console.error("Error loading overview:", error);
         }
+      }
 
-        // Load expense trends
-        async function loadExpenseTrends() {
-            try {
-                const period = document.getElementById('trendPeriod').value;
-                const response = await fetch(`/api/finance-stats.php?action=expense-trends&period=${period}`);
-                const result = await response.json();
+      // Load expense trends
+      async function loadExpenseTrends() {
+        try {
+          const period = document.getElementById("trendPeriod").value;
+          const response = await fetch(
+            `/sts-admin-claude/api/finance-stats.php?action=expense-trends&period=${period}`
+          );
+          const result = await response.json();
 
-                if (result.success) {
-                    const data = result.data.data;
+          if (result.success) {
+            const data = result.data.data;
 
-                    const labels = data.map(item => item.month_label);
-                    const amounts = data.map(item => parseFloat(item.total_amount));
+            const labels = data.map((item) => item.month_label);
+            const amounts = data.map((item) => parseFloat(item.total_amount));
 
-                    const ctx = document.getElementById('trendChart').getContext('2d');
+            const ctx = document.getElementById("trendChart").getContext("2d");
 
-                    if (trendChart) {
-                        trendChart.destroy();
-                    }
-
-                    trendChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Total Expenses',
-                                data: amounts,
-                                borderColor: '#45C4B0',
-                                backgroundColor: 'rgba(69, 196, 176, 0.1)',
-                                tension: 0.4,
-                                fill: true,
-                                pointBackgroundColor: '#45C4B0',
-                                pointBorderColor: '#fff',
-                                pointBorderWidth: 2,
-                                pointRadius: 4,
-                                pointHoverRadius: 6
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#1A1A1A',
-                                    titleColor: '#fff',
-                                    bodyColor: '#ccc',
-                                    borderColor: '#45C4B0',
-                                    borderWidth: 1,
-                                    padding: 12,
-                                    displayColors: false,
-                                    callbacks: {
-                                        label: function(context) {
-                                            return 'Total: $' + context.parsed.y.toLocaleString();
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        color: '#999',
-                                        callback: function(value) {
-                                            return '$' + value.toLocaleString();
-                                        }
-                                    },
-                                    grid: { color: '#333' }
-                                },
-                                x: {
-                                    ticks: { color: '#999' },
-                                    grid: { color: '#333' }
-                                }
-                            }
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading trends:', error);
+            if (trendChart) {
+              trendChart.destroy();
             }
+
+            trendChart = new Chart(ctx, {
+              type: "line",
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label: "Total Expenses",
+                    data: amounts,
+                    borderColor: "#45C4B0",
+                    backgroundColor: "rgba(69, 196, 176, 0.1)",
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: "#45C4B0",
+                    pointBorderColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    backgroundColor: "#1A1A1A",
+                    titleColor: "#fff",
+                    bodyColor: "#ccc",
+                    borderColor: "#45C4B0",
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                      label: function (context) {
+                        return "Total: $" + context.parsed.y.toLocaleString();
+                      },
+                    },
+                  },
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      color: "#999",
+                      callback: function (value) {
+                        return "$" + value.toLocaleString();
+                      },
+                    },
+                    grid: { color: "#333" },
+                  },
+                  x: {
+                    ticks: { color: "#999" },
+                    grid: { color: "#333" },
+                  },
+                },
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error loading trends:", error);
         }
+      }
 
-        // Load category breakdown
-        async function loadCategoryBreakdown() {
-            try {
-                const year = document.getElementById('periodYear').value;
-                const month = document.getElementById('periodMonth').value;
+      // Load category breakdown
+      async function loadCategoryBreakdown() {
+        try {
+          const year = document.getElementById("periodYear").value;
+          const month = document.getElementById("periodMonth").value;
 
-                const response = await fetch(`/api/finance-stats.php?action=category-breakdown&year=${year}&month=${month}`);
-                const result = await response.json();
+          const response = await fetch(
+            `/sts-admin-claude/api/finance-stats.php?action=category-breakdown&year=${year}&month=${month}`
+          );
+          const result = await response.json();
 
-                if (result.success) {
-                    const categories = result.data.categories;
+          if (result.success) {
+            const categories = result.data.categories;
 
-                    if (categories.length === 0) {
-                        document.getElementById('categoryChartContainer').innerHTML = `
+            if (categories.length === 0) {
+              document.getElementById("categoryChartContainer").innerHTML = `
                             <div class="finance-empty-state">
                                 <i class="bi bi-pie-chart"></i>
                                 <h4>No Expenses Yet</h4>
                                 <p>Add expenses to see category breakdown</p>
                             </div>
                         `;
-                        return;
-                    }
-
-                    const labels = categories.map(cat => cat.name);
-                    const amounts = categories.map(cat => parseFloat(cat.total_amount));
-                    const colors = categories.map(cat => cat.color);
-
-                    const ctx = document.getElementById('categoryChart').getContext('2d');
-
-                    if (categoryChart) {
-                        categoryChart.destroy();
-                    }
-
-                    categoryChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                data: amounts,
-                                backgroundColor: colors,
-                                borderColor: '#1A1A1A',
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'right',
-                                    labels: {
-                                        color: '#ccc',
-                                        padding: 15,
-                                        font: { size: 12 },
-                                        generateLabels: function(chart) {
-                                            const data = chart.data;
-                                            return data.labels.map((label, i) => ({
-                                                text: `${label} (${categories[i].percentage}%)`,
-                                                fillStyle: data.datasets[0].backgroundColor[i],
-                                                hidden: false,
-                                                index: i
-                                            }));
-                                        }
-                                    }
-                                },
-                                tooltip: {
-                                    backgroundColor: '#1A1A1A',
-                                    titleColor: '#fff',
-                                    bodyColor: '#ccc',
-                                    borderColor: '#45C4B0',
-                                    borderWidth: 1,
-                                    padding: 12,
-                                    callbacks: {
-                                        label: function(context) {
-                                            const label = context.label || '';
-                                            const value = context.parsed;
-                                            const percentage = categories[context.dataIndex].percentage;
-                                            return `${label}: $${value.toLocaleString()} (${percentage}%)`;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading categories:', error);
+              return;
             }
+
+            const labels = categories.map((cat) => cat.name);
+            const amounts = categories.map((cat) =>
+              parseFloat(cat.total_amount)
+            );
+            const colors = categories.map((cat) => cat.color);
+
+            const ctx = document
+              .getElementById("categoryChart")
+              .getContext("2d");
+
+            if (categoryChart) {
+              categoryChart.destroy();
+            }
+
+            categoryChart = new Chart(ctx, {
+              type: "doughnut",
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    data: amounts,
+                    backgroundColor: colors,
+                    borderColor: "#1A1A1A",
+                    borderWidth: 2,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "right",
+                    labels: {
+                      color: "#ccc",
+                      padding: 15,
+                      font: { size: 12 },
+                      generateLabels: function (chart) {
+                        const data = chart.data;
+                        return data.labels.map((label, i) => ({
+                          text: `${label} (${categories[i].percentage}%)`,
+                          fillStyle: data.datasets[0].backgroundColor[i],
+                          hidden: false,
+                          index: i,
+                        }));
+                      },
+                    },
+                  },
+                  tooltip: {
+                    backgroundColor: "#1A1A1A",
+                    titleColor: "#fff",
+                    bodyColor: "#ccc",
+                    borderColor: "#45C4B0",
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                      label: function (context) {
+                        const label = context.label || "";
+                        const value = context.parsed;
+                        const percentage =
+                          categories[context.dataIndex].percentage;
+                        return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                      },
+                    },
+                  },
+                },
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error loading categories:", error);
         }
+      }
 
-        // Load budget performance
-        async function loadBudgetPerformance() {
-            try {
-                const response = await fetch('/api/finance-stats.php?action=budget-performance');
-                const result = await response.json();
+      // Load budget performance
+      async function loadBudgetPerformance() {
+        try {
+          const response = await fetch(
+            "/sts-admin-claude/api/finance-stats.php?action=budget-performance"
+          );
+          const result = await response.json();
 
-                if (result.success && result.data.length > 0) {
-                    const budgets = result.data.slice(0, 5);
-                    let html = '';
+          if (result.success && result.data.length > 0) {
+            const budgets = result.data.slice(0, 5);
+            let html = "";
 
-                    budgets.forEach(budget => {
-                        const percentage = budget.spent_percentage;
-                        let progressClass = 'on-track';
-                        if (budget.is_exceeded) progressClass = 'exceeded';
-                        else if (budget.is_warning) progressClass = 'warning';
+            budgets.forEach((budget) => {
+              const percentage = budget.spent_percentage;
+              let progressClass = "on-track";
+              if (budget.is_exceeded) progressClass = "exceeded";
+              else if (budget.is_warning) progressClass = "warning";
 
-                        html += `
+              html += `
                             <div class="mb-3 pb-3" style="border-bottom: 1px solid var(--border-color);">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
                                         <h6 class="mb-0">${budget.name}</h6>
-                                        <small class="text-muted">${budget.budget_type}</small>
+                                        <small class="text-muted">${
+                                          budget.budget_type
+                                        }</small>
                                     </div>
                                     <div class="text-end">
-                                        <strong>${formatCurrency(budget.spent_amount)}</strong>
-                                        <small class="text-muted"> / ${formatCurrency(budget.amount)}</small>
+                                        <strong>${formatCurrency(
+                                          budget.spent_amount
+                                        )}</strong>
+                                        <small class="text-muted"> / ${formatCurrency(
+                                          budget.amount
+                                        )}</small>
                                     </div>
                                 </div>
                                 <div class="budget-progress">
                                     <div class="budget-progress-bar ${progressClass}" 
-                                         style="width: ${Math.min(percentage, 100)}%"></div>
+                                         style="width: ${Math.min(
+                                           percentage,
+                                           100
+                                         )}%"></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
-                                    <small class="budget-percentage ${progressClass}">${percentage.toFixed(1)}% used</small>
-                                    <small class="text-muted">${formatCurrency(budget.remaining_amount)} left</small>
+                                    <small class="budget-percentage ${progressClass}">${percentage.toFixed(
+                1
+              )}% used</small>
+                                    <small class="text-muted">${formatCurrency(
+                                      budget.remaining_amount
+                                    )} left</small>
                                 </div>
                             </div>
                         `;
-                    });
+            });
 
-                    document.getElementById('budgetPerformanceList').innerHTML = html;
-                } else {
-                    document.getElementById('budgetPerformanceList').innerHTML = `
+            document.getElementById("budgetPerformanceList").innerHTML = html;
+          } else {
+            document.getElementById("budgetPerformanceList").innerHTML = `
                         <div class="finance-empty-state">
                             <i class="bi bi-piggy-bank"></i>
                             <h4>No Active Budgets</h4>
@@ -590,16 +666,16 @@
                             <a href="budgets.html" class="btn btn-accent mt-2">Create Budget</a>
                         </div>
                     `;
-                }
-            } catch (error) {
-                console.error('Error loading budgets:', error);
-            }
+          }
+        } catch (error) {
+          console.error("Error loading budgets:", error);
         }
+      }
 
-        // Load recent expenses
-        function loadRecentExpenses(expenses) {
-            if (!expenses || expenses.length === 0) {
-                document.getElementById('recentExpensesList').innerHTML = `
+      // Load recent expenses
+      function loadRecentExpenses(expenses) {
+        if (!expenses || expenses.length === 0) {
+          document.getElementById("recentExpensesList").innerHTML = `
                     <div class="finance-empty-state">
                         <i class="bi bi-receipt"></i>
                         <h4>No Recent Expenses</h4>
@@ -607,36 +683,46 @@
                         <a href="expenses.html" class="btn btn-accent mt-2">Add Expense</a>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            let html = '';
-            expenses.forEach(expense => {
-                const statusBadge = getStatusBadge(expense.status);
-                
-                html += `
+        let html = "";
+        expenses.forEach((expense) => {
+          const statusBadge = getStatusBadge(expense.status);
+
+          html += `
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-3" 
                          style="border-bottom: 1px solid var(--border-color);">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="category-icon-box" style="background: ${expense.category_color}20;">
-                                <i class="bi bi-${expense.category_icon || 'tag'}" 
-                                   style="color: ${expense.category_color};"></i>
+                            <div class="category-icon-box" style="background: ${
+                              expense.category_color
+                            }20;">
+                                <i class="bi bi-${
+                                  expense.category_icon || "tag"
+                                }" 
+                                   style="color: ${
+                                     expense.category_color
+                                   };"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">${expense.title}</h6>
-                                <small class="text-muted">${expense.category_name} • ${formatDate(expense.expense_date)}</small>
+                                <small class="text-muted">${
+                                  expense.category_name
+                                } • ${formatDate(expense.expense_date)}</small>
                             </div>
                         </div>
                         <div class="text-end">
-                            <strong class="d-block">${formatCurrency(expense.amount)}</strong>
+                            <strong class="d-block">${formatCurrency(
+                              expense.amount
+                            )}</strong>
                             ${statusBadge}
                         </div>
                     </div>
                 `;
-            });
+        });
 
-            document.getElementById('recentExpensesList').innerHTML = html;
-        }
+        document.getElementById("recentExpensesList").innerHTML = html;
+      }
     </script>
-</body>
+  </body>
 </html>

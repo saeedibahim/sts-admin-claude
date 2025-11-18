@@ -576,7 +576,7 @@ function displayBudgets(budgets) {
             try {
                 console.log('Sending budget data:', budgetData); // DEBUG
 
-                const response = await fetch('/api/budgets.php', {
+                const response = await fetch('/sts-admin-claude/api/budgets.php', {
                     method: budgetId ? 'PUT' : 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -617,7 +617,7 @@ function displayBudgets(budgets) {
         async function deleteBudgetConfirm(id, name) {
             if (confirmDelete(name)) {
                 try {
-                    const response = await fetch('/api/budgets.php', {
+                    const response = await fetch('/sts-admin-claude/api/budgets.php', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id })

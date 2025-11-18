@@ -99,7 +99,7 @@ try {
                     'full_name' => $user['full_name'],
                     'role' => $user['role']
                 ],
-                'redirect' => $_SESSION['redirect_after_login'] ?? 'index.html'
+                'redirect' => $_SESSION['redirect_after_login'] ?? 'index.php'
             ], 'Login successful');
 
             break;

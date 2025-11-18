@@ -502,12 +502,12 @@
       // Save category
         async function saveCategory() {
             const form = document.getElementById("categoryForm");
-        
+
             if (!form.checkValidity()) {
             form.reportValidity();
             return;
             }
-        
+
             const categoryData = {
             name: document.getElementById("categoryName").value,
             description: document.getElementById("categoryDescription").value,
@@ -515,13 +515,13 @@
             icon: document.getElementById("categoryIcon").value,
             is_active: document.getElementById("categoryActive").checked ? 1 : 0,
             };
-        
+
             const categoryId = document.getElementById("categoryId").value;
-        
+
             try {
             console.log("Sending category data:", categoryData); // DEBUG
-            
-            const response = await fetch("/api/categories.php", {
+
+            const response = await fetch("/sts-admin-claude/api/categories.php", {
                 method: categoryId ? "PUT" : "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -532,11 +532,11 @@
             });
 
             console.log("Response status:", response.status); // DEBUG
-          
+
             // Get response as text first
             const responseText = await response.text();
             console.log("Response text:", responseText); // DEBUG
-          
+
             // Try to parse as JSON
             let result;
             try {
@@ -572,7 +572,7 @@
       async function deleteCategoryConfirm(id, name) {
         if (confirmDelete(name)) {
           try {
-            const response = await fetch("/api/categories.php", {
+            const response = await fetch("/sts-admin-claude/api/categories.php", {
               method: "DELETE",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ id }),
