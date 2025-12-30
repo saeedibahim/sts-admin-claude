@@ -475,29 +475,37 @@
         }
 
         // Apply filters
-        function applyFilters() {
+        async function applyFilters() {
+            // Check if date filters have changed - if so, reload from server
+            const startDate = document.getElementById('startDateFilter').value;
+            const endDate = document.getElementById('endDateFilter').value;
+
+            // Reload expenses with new date range
+            await loadExpenses();
+
+            // Then apply client-side filters
             let filtered = [...allExpenses];
-            
+
             const search = document.getElementById('searchInput').value.toLowerCase();
             const categoryId = document.getElementById('categoryFilter').value;
             const status = document.getElementById('statusFilter').value;
-            
+
             if (search) {
-                filtered = filtered.filter(exp => 
+                filtered = filtered.filter(exp =>
                     exp.title.toLowerCase().includes(search) ||
                     (exp.description && exp.description.toLowerCase().includes(search)) ||
                     (exp.vendor && exp.vendor.toLowerCase().includes(search))
                 );
             }
-            
+
             if (categoryId) {
                 filtered = filtered.filter(exp => exp.category_id == categoryId);
             }
-            
+
             if (status) {
                 filtered = filtered.filter(exp => exp.status === status);
             }
-            
+
             updateQuickStats(filtered);
             displayExpenses(filtered);
         }

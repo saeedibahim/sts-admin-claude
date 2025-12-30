@@ -1,7 +1,7 @@
 <?php
 /**
- * Clients API
- * CRUD operations for clients and projects
+ * Clients API - Works with existing table structure
+ * Manages clients with project information
  */
 
 require_once __DIR__ . '/../includes/auth_check.php';
@@ -28,7 +28,7 @@ try {
                     send_error('Client not found', null, 404);
                 }
 
-                // Decode JSON fields
+                // Decode tech_stack JSON if exists
                 if ($client['tech_stack']) {
                     $client['tech_stack'] = json_decode($client['tech_stack'], true);
                 }
@@ -39,14 +39,17 @@ try {
                 $where = [];
                 $params = [];
 
-                if (isset($_GET['status']) && $_GET['status'] !== '') {
+                // Filter by project status
+                if (isset($_GET['status']) && $_GET['status'] !== '' && $_GET['status'] !== 'all') {
                     $where[] = "project_status = ?";
                     $params[] = $_GET['status'];
                 }
 
+                // Search functionality
                 if (isset($_GET['search']) && $_GET['search'] !== '') {
                     $search = '%' . $_GET['search'] . '%';
-                    $where[] = "(client_name LIKE ? OR company_name LIKE ? OR project_name LIKE ?)";
+                    $where[] = "(client_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR project_name LIKE ?)";
+                    $params[] = $search;
                     $params[] = $search;
                     $params[] = $search;
                     $params[] = $search;
@@ -60,7 +63,7 @@ try {
 
                 $clients = $db->fetchAll($sql, $params);
 
-                // Decode JSON fields
+                // Decode tech_stack JSON for all clients
                 foreach ($clients as &$client) {
                     if ($client['tech_stack']) {
                         $client['tech_stack'] = json_decode($client['tech_stack'], true);
@@ -113,10 +116,10 @@ try {
                 sanitize_string($data['phone'] ?? ''),
                 sanitize_string($data['project_name']),
                 $data['project_status'] ?? 'Active',
-                $data['project_description'] ?? '',
+                sanitize_string($data['project_description'] ?? ''),
                 $data['start_date'] ?? null,
                 $data['deadline'] ?? null,
-                $data['additional_notes'] ?? '',
+                sanitize_string($data['additional_notes'] ?? ''),
                 $techStack
             ]);
 
@@ -206,7 +209,7 @@ try {
                 send_error('Client not found', null, 404);
             }
 
-            // Delete client (will cascade to related tasks)
+            // Delete client (will cascade to related records)
             $sql = "DELETE FROM clients WHERE id = ?";
             $db->execute($sql, [$id]);
 

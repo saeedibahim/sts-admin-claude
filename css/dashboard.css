@@ -476,3 +476,82 @@
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
     }
 }
+
+/* ==========================================
+   Clients Table Styling
+   ========================================== */
+.clients-table {
+    background-color: var(--bg-secondary);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.clients-table thead th {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.clients-table tbody tr {
+    background-color: var(--bg-secondary);
+    transition: all 0.3s ease;
+}
+
+.clients-table tbody tr:hover {
+    background-color: rgba(69, 196, 176, 0.05);
+    transform: scale(1.01);
+}
+
+.clients-table tbody td {
+    padding: 1rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.clients-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Client name and company styling */
+.clients-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.clients-table tbody td:first-child small {
+    display: block;
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Project column */
+.clients-table tbody td:nth-child(2) {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+/* Contact info styling */
+.clients-table tbody td:nth-child(3) a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.clients-table tbody td:nth-child(3) a:hover {
+    color: #5ed4c0;
+}
+
+.clients-table tbody td:nth-child(3) small {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
